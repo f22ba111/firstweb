@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>テキストにスタイル設定</title>
+    <style>
+        /* これはCSSのコメントです */
+        /* 
+         複数行のコメントを
+         描くこともできる
+        */ 
+        h1 {
+            font-size: 2.5em;
+            font-family: cursive;
+            color: #ff0000;
+        }
+        #a{
+            color: black;
+            
+        }
+        h2 {
+            font-size: 2.0em;
+            font-family: fantasy;
+            color: rgb(0, 255, 255);
+        }
+        p {
+            font-size: 1.2em;
+            font-family: sans-serif;
+            color: blue;
+        }
+        span {
+            font: bold italic 1.7em serif;
+            color: white;
+            background-color: magenta;
+        }
+        h3 {
+            font-size: 200%;
+            /* importantはタグに直書きよりつよい */
+            color: white !important;
+            background-color: black;
+        }
+        h4 {
+            background-color: black;
+        }
+        .b {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- これはHTMLのコメントです -->
+    <h1>Hellow!Yamamoto</h1>
+    <h1 id="a">ABC123</h1>
+    <h2>Hellow!Yamamoto</h2>
+    <p>this is <span> Sample </span> content.</p>
+    <h3>あいうえお</h3>
+    <h3 style="color: #00ff00; font-size: 300%;">abc</h3>
+    <h4>1</h4>
+    <h4 class="b">2</h4>
+    <h4 class="b">3</h4>
+    <h4>4</h4>
+</body>
+</html>
