@@ -15,8 +15,11 @@
         p {
             font-size: 200%;
         }
+        div {
+            width: 500%;
+        }
         #dummylink {
-            color: #000000;
+            color: #000;
             text-decoration: none;
             cursor: text;
         }
@@ -28,18 +31,19 @@
             font-size: 16px;
             text-align: center;
             padding: 15px;
-            border-radius: 100pv;
+            border-radius: 30px;
             border: none;
             cursor: pointer;
         }
     </style>
+    
 </head>
 <body>
     <h1>STAGE1</h1>
     <p>次のステージのURl 
         <br>
-        ↓<a id="dummylink" href="second.html">↓</a>↓
+        ↓<a id="dummylink" href="second.html" tabindex="-1">↓</a>↓
     </p>
-    <input class="next"  value="STAGE2">
+    <input class="next" value="STAGE2" >
 </body>
 </html>
