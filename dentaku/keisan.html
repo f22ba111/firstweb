@@ -6,26 +6,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>簡易電卓</title>
     <style>
+        body{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateY(-50%) translateX(-50%);
+            -webkit-transform: translateY(-50%) translateX(-50%);
+        }
         
         #num1{
             width: 100px; 
+            height: 100px;
+            font-size: 75px;
             border-radius: 5px;
+            text-align: center; 
         }
         #kigo{
-            width: 50px;
-            border-radius: 5px;  
+            width: 90px; 
+            height: 90px;
+            border-radius: 5px;
+            font-size: 75px; 
+            text-align: center; 
         }
         #num2{
-            width: 50px;
-            border-radius: 5px; 
-        }
-        #epual{
-            width: 50px; 
+            width: 100px; 
+            height: 100px;
             border-radius: 5px;
+            font-size: 75px; 
+            text-align: center; 
+        }
+        #equal{
+            width: 90px; 
+            height: 90px;
+            font-size: 75px; 
+            text-align: center;
         }
         #result{
-            width: 50px; 
+            width: 100px; 
+            height: 100px;
             border-radius: 5px;
+            font-size: 75px;
+            text-align: center; 
         }
 
     </style>
@@ -70,11 +91,12 @@
     </script>
 </head>
 <body>
-    <input id="num1" type="text">
-    <input id="kigo" type="text">
-    <input id="num2" type="text">
-    <button id="equal" onclick="clac()">=</button>
-    <input id="result" type="text">
-  
+    
+        <input id="num1" type="text">
+        <input id="kigo" type="text">
+        <input id="num2" type="text">
+        <button id="equal" onclick="clac()">=</button>
+        <input id="result" type="text">
+    
 </body>
 </html>
