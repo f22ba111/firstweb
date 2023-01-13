@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>クッキーをセットしよう!</title>
+    <script>
+        function setCookie() {
+            /*cookieに値を設定(webページ上でないと確認不可)
+            デバックで確認 or javascript:alert(document.cookie)で検索
+            (コピーしたらjavascript:が消える)　
+            →testと出てくる*/
+            document.cookie = "test"
+        }
+    </script>
+</head>
+<body onload="setCookie()">
+</body>
+</html>
