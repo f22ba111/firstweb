@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ミニバカラ</title>
+    <script>
+        //持ち金
+        let gHava = 500
+        //ベット額
+        let gBet = 0
+        //ベット位置
+        let gBetPosition = ""
+        //結果
+        let gResult = ""
+        //結果コメント
+        let gComent = ""
+        //カード配列
+        let gCard = ["c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9", "c10", "c11", "c12", "c13", "d1", "d2", "d3", "d4", "d5", "d6", "d7", "d8", "d9", "d10", "d11", "d12", "d13", "h1", "h2", "h3", "h4", "h5", "h6", "h7", "h8", "h9", "h10", "h11", "h12", "h13", "s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9", "s10", "s11", "s12", "s13"]
+
+        //プレイヤー
+        let gPlayerCard = new Array();
+        let gPlayerNum = new Array();
+        let gPlayerSum = 0;
+
+        //バンカー
+        let gBankerCard = new Array();
+        let gBankerNum = new Array();
+        let gBankerSum = 0;
+
+        //読み込み時と再スタート時
+        function start() {
+            displaySettingTip()
+            displayTip()
+        }
+
+        function displaySettingTip() {
+            document.getElementById("settingTip").className = "on Setting tip"
+            displaytipInfo()
+        }
+
+        //持ち金、ベット額の表示
+        function displaytipInfo() {
+            document.getElementById("hava").value = gHava
+            document.getElementById("bet").value = gBet
+        }
+
+        //チップ表示
+        function displayTip() {
+            if (gHava >= 1) {
+                document.getElementById("1").className = "on"
+                if (gHava >= 5) {
+                    document.getElementById("5").className = "on"
+                    if (gHava >= 10) {
+                        document.getElementById("10").className = "on"
+                        if (gHava >= 25) {
+                            document.getElementById("25").className = "on"
+                            if (gHava >= 50) {
+                                document.getElementById("50").className = "on"
+                                if (gHava >= 100) {
+                                    document.getElementById("100").className = "on"
+                                    if (gHava >= 500) {
+                                        document.getElementById("500").className = "on"
+                                        if (gHava >= 1000) {
+                                            document.getElementById("1000").className = "on"
+                                            if (gHava >= 5000) {
+                                                document.getElementById("5000").className = "on"
+                                                if (gHava >= 10000) {
+                                                    document.getElementById("10000").className = "on"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        function resetDisplayTip() {
+            document.getElementById("1").className = "off"
+            document.getElementById("5").className = "off"
+            document.getElementById("10").className = "off"
+            document.getElementById("25").className = "off"
+            document.getElementById("50").className = "off"
+            document.getElementById("100").className = "off"
+            document.getElementById("500").className = "off"
+            document.getElementById("1000").className = "off"
+            document.getElementById("5000").className = "off"
+            document.getElementById("10000").className = "off"
+        }
+
+        //ベット金額設定
+        function betSetting(tip) {
+            aaaa = parseInt(tip)
+            gBet += aaaa
+            gHava -= aaaa
+            displaytipInfo()
+            resetDisplayTip()
+            displayTip()
+        }
+
+        //ベット金額リセット
+        function resetTipSetting() {
+            gHava += gBet;
+            gBet = 0;
+            displaytipInfo()
+            resetDisplayTip()
+            displayTip()
+        }
+
+        //ベット金額確定
+        function confilmTip() {
+            if (gBet == 0) {
+                return;
+            }
+            document.getElementById("settingTip").className = "off Setting tip";
+            document.getElementById("settingBetPosition").className = "on Setting betPosition";
+            document.getElementById("txtBetPosition").value = ""
+        }
+
+
+        //ベットする場所の選択
+        function betPositionSetting(position) {
+            if (position == 1) {
+                gBetPosition = "Player"
+            } else if (position == 2) {
+                gBetPosition = "Tie"
+            } else {
+                gBetPosition = "Banker"
+            }
+            document.getElementById("txtBetPosition").value = gBetPosition
+        }
+
+        //ベットする場所の確定
+        function confilmBetPosition() {
+            if (gBetPosition == "") {
+                return;
+            }
+            document.getElementById("settingBetPosition").className = "off Setting betPosition";
+            displayField()
+        }
+
+        function displayField() {
+            document.getElementById("txtPlayerBet").value = "";
+            document.getElementById("txtBankerBet").value = "";
+            document.getElementById("txtTieBet").value = "";
+            document.getElementById("fieldHave").value = "";
+            document.getElementById("fieldBet").value = "";
+            document.getElementById("field").className = "on field";
+            displayFieldInf()
+        }
+
+        function displayFieldInf() {
+            if (gBetPosition == "Player") {
+                document.getElementById("txtPlayerBet").value = gBet;
+            } else if (gBetPosition == "Banker") {
+                document.getElementById("txtBankerBet").value = gBet;
+            } else {
+                document.getElementById("txtTieBet").value = gBet;
+            }
+            document.getElementById("fieldHave").value = gHava;
+            document.getElementById("fieldBet").value = gBet;
+            resetField();
+            setTimeout(firstDial, 2000);
+            //firstDial()
+        }
+
+        function resetField() {
+            var cardp1 = document.getElementById("playerCard1")
+            cardp1.src = "b.png"
+            var cardp2 = document.getElementById("playerCard2")
+            cardp2.src = "b.png"
+            var cardp3 = document.getElementById("playerCard3")
+            cardp3.src = "b.png"
+            var cardb1 = document.getElementById("bankerCard1")
+            cardb1.src = "b.png"
+            var cardb2 = document.getElementById("bankerCard2")
+            cardb2.src = "b.png"
+            var cardb3 = document.getElementById("bankerCard3")
+            cardb3.src = "b.png"
+            document.getElementById("PlayerSum").value = ""
+            document.getElementById("BankerSum").value = ""
+        }
+
+
+
+        //二枚づつ配る→カードを配列に格納→カード表示→カードの数字格納→合計計算→合計表示
+        function firstDial() {
+            for (let i = 0; i < 2; i++) {
+                setTimeout(dialPlayerCard(),1000);
+                setTimeout(dialBankerCard,1000);
+                /*dialPlayerCard();
+                dialBankerCard();*/
+            }
+            setTimeout(checkFisrtDial, 1000)
+            //checkFisrtDial(); 
+        }
+
+        //配布　
+        function dialPlayerCard() {
+            var num = randomNumCheck();
+            setTimeout(pushPlayerCardAndNum, 500, num);
+            setTimeout(displayPlayerCard, 500);
+            setTimeout(calcPlayerSum, 500, num);
+            setTimeout(displayPlayerSum, 500);
+        }
+
+        function dialBankerCard() {
+            var num = randomNumCheck();
+            setTimeout(pushBankerCardAndNum, 500, num);
+            setTimeout(displayBankerCard, 500);
+            setTimeout(calcBankerSum, 500, num);
+            setTimeout(displayBankerSum, 500);
+        }
+
+        //randomNum取得
+        function randomNumCheck() {
+            let randomNumCheck = true;
+            while (randomNumCheck == true) {
+                var randomNum = Math.floor(Math.random() * 52);
+                //カード配列の中になかったら
+                if (gPlayerCard.indexOf(gCard[randomNum]) == -1 & gBankerCard.indexOf(gCard[randomNum]) == -1) {
+                    return randomNum;
+                }
+            }
+        }
+
+        //配列に格納
+        function pushPlayerCardAndNum(num) {
+            gPlayerCard.push(gCard[num]);
+            gPlayerNum.push(num % 13 + 1)
+        }
+        function pushBankerCardAndNum(num) {
+            gBankerCard.push(gCard[num]);
+            gBankerNum.push(num % 13 + 1)
+        }
+
+        //トランプ表示
+        function displayPlayerCard() {
+            playerCardPosition = "playerCard" + String(gPlayerCard.length)
+            var playerCardImg = document.getElementById(playerCardPosition)
+            playerCardImg.className = "on img"
+            playerCardImg.src = gPlayerCard[gPlayerCard.length - 1] + ".png";
+        }
+
+        function displayBankerCard() {
+            bankerCardPosition = "bankerCard" + String(gBankerCard.length)
+            var bankerCardImg = document.getElementById(bankerCardPosition)
+            bankerCardImg.className = "on img"
+            bankerCardImg.src = gBankerCard[gBankerCard.length - 1] + ".png";
+        }
+
+        //合計計算　引数　ランダムな数字
+        function calcPlayerSum(num) {
+            if (num % 13 >= 9) {
+                gPlayerSum += 10
+            } else {
+                gPlayerSum += num % 13 + 1
+            }
+            gPlayerSum %= 10
+        }
+
+        function calcBankerSum(num) {
+            if (num % 13 >= 9) {
+                gBankerSum += 10
+            } else {
+                gBankerSum += num % 13 + 1
+            }
+            gBankerSum %= 10
+        }
+
+        //合計表示
+        function displayPlayerSum() {
+            document.getElementById("PlayerSum").value = gPlayerSum
+        }
+
+        function displayBankerSum() {
+            document.getElementById("BankerSum").value = gBankerSum
+        }
+
+        //一回目の判定
+        function checkFisrtDial() {
+            if (gPlayerSum <= 5) {
+                if (gBankerSum <= 2) {
+                    addBoth();
+                } else if (gBankerSum == 3) {
+                    addPlayerCard();
+                    checkPlayerCard("!8")
+                } else if (gBankerSum == 4) {
+                    addPlayerCard();
+                    checkPlayerCard("2~7")
+                } else if (gBankerSum == 5) {
+                    addPlayerCard();
+                    checkPlayerCard("4~7")
+                } else if (gBankerSum == 6) {
+                    addPlayerCard();
+                    checkPlayerCard("6,7")
+                } else if (gBankerSum == 7) {
+                    addPlayerCard();
+                }
+            } else if (gPlayerSum <= 7) {
+                if (gBankerSum <= 5) {
+                    addBankerCard()
+                }
+            }
+            setTimeout(checkSum, 2000)
+        }
+
+        //追加
+        function addBoth() {
+            dialPlayerCard();
+            dialBankerCard();
+        }
+
+        function addPlayerCard() {
+            dialPlayerCard();
+        }
+        function addBankerCard() {
+            dialBankerCard();
+        }
+
+        //判定の続き
+        function checkPlayerCard(s) {
+            if (s == "!8") {
+                if (gPlayerNum[2] != 8) {
+                    addBankerCard();
+                }
+            } else if (s == "2~7") {
+                if (2 <= gPlayerNum[2] & gPlayerCard[2] <= 7) {
+                    addBankerCard();
+                }
+            } else if (s == "4~7") {
+                if (4 <= gPlayerNum[2] & gPlayerCard[2] <= 7) {
+                    addBankerCard();
+                }
+            } else {
+                if (gPlayerNum[2] == 6 | gPlayerCard[2] == 7) {
+                    addBankerCard();
+                }
+            }
+        }
+
+        //結果確認
+        function checkSum() {
+            differencePlayer = 9 - gPlayerSum
+            differenceBanker = 9 - gBankerSum
+            if (differencePlayer == differenceBanker) {
+                tie()
+            } else if (differencePlayer < differenceBanker) {
+                playerWin()
+            } else {
+                bankerWin()
+            }
+        }
+        //引き分け
+        function tie() {
+            if (gBetPosition == "Tie") {
+                gBet *= 9;
+                gHava += gBet;
+                gComent = "おめでとう"
+            } else {
+                gBet = 0;
+                gComent = "残念"
+            }
+            gResult = "Tie";
+            setTimeout(displayResult, 3000)
+            //displayResult();
+        }
+
+        //プレイヤー勝利
+        function playerWin() {
+            if (gBetPosition == "Player") {
+                gBet *= 2;
+                gHava += gBet;
+                gComent = "おめでとう";
+            } else {
+                gBet = 0;
+                gComent = "残念";
+            }
+            gResult = "PlayerWin";
+            setTimeout(displayResult, 3000)
+            //displayResult();
+        }
+        //バンカー勝利
+        function bankerWin() {
+            if (gBetPosition == "Banker") {
+                gBet = Math.floor(gBet * 1.95)
+                gHava += gBet;
+                gComent = "おめでとう";
+            } else {
+                gBet = 0;
+                gComent = "残念";
+            }
+            gResult = "BankerWin";
+            setTimeout(displayResult, 3000)
+            //displayResult();
+        }
+
+        function displayResult() {
+            offField()
+            //(offField,1000)
+            //表示させる用
+            document.getElementById("result").className = "on Result";
+
+        }
+
+        function offField() {
+            document.getElementById("field").className = "off field";
+            displayResult2()
+            //setTimeout(displayResult2,1000)
+        }
+
+        function displayResult2() {
+            document.getElementById("txtResult").value = gResult;
+            document.getElementById("txtComent").value = gComent;
+            document.getElementById("txtHavaAfter").value = gHava
+        }
+
+
+        function gameContinue() {
+            if (gHava == 0) {
+                gHava = 500
+            }
+            resetJs();
+            document.getElementById("result").className = "off Result";
+            start();
+        }
+
+        function resetJs() {
+            document.getElementById("hava").value = ""
+            document.getElementById("bet").value = ""
+            document.getElementById("fieldHave").value = "";
+            document.getElementById("fieldBet").value = "";
+            gBet = 0;
+            gBetPosition = "";
+            gComent = "";
+            gResult = "";
+            gPlayerCard.length = 0;
+            gPlayerNum.length = 0;
+            gPlayerSum = 0;
+            gBankerCard.length = 0;
+            gBankerNum.length = 0;
+            gBankerSum = 0;
+        }
+
+    </script>
+
+    <style>
+        .html {
+            height: 100%;
+            width: 100%;
+        }
+
+        body {
+            height: 100%;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .off {
+            display: none;
+        }
+
+        .on {
+            font-size: 100%;
+        }
+
+        h1 {
+            display: flex;
+            margin: 12px;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        .Setting {
+            align-items: center;
+            width: 100%;
+        }
+
+        button {
+            font-size: 150%;
+        }
+
+        p {
+            font-size: 125%;
+        }
+
+        .select {
+            font-size: 175%;
+        }
+
+        #selectTip {
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        #settingTip {
+            position: absolute;
+            text-align: center;
+            margin: 0 auto;
+            background-color: rgb(88, 88, 204);
+            top: 50%;
+            left: 50%;
+            transform: translateY(-50%) translateX(-50%);
+        }
+
+        #settingBetPosition {
+            position: absolute;
+            text-align: center;
+            margin: 0 auto;
+            background-color: rgb(88, 88, 204);
+            top: 50%;
+            left: 50%;
+            transform: translateY(-50%) translateX(-50%);
+        }
+
+        .tipInfo {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+
+        .confilm {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            margin: 12px auto;
+        }
+
+
+        table {
+            width: 100%;
+            height: 100%;
+        }
+
+        .wrap {
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+        }
+
+        .playerInfo .bankerInfo {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .img {
+            display: flex;
+            height: 250px;
+            width: 175px;
+            margin: auto;
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+
+        .wrapImg {
+            display: flex;
+        }
+
+        #result {
+            width: 100%;
+            position: absolute;
+            text-align: center;
+            margin: 0 auto;
+            background-color: rgb(88, 88, 204);
+            top: 50%;
+            left: 50%;
+            transform: translateY(-50%) translateX(-50%);
+        }
+
+        #playerCard1,
+        #playerCard2,
+        #playerCard3,
+        #bankerCard1,
+        #bankerCard2,
+        #bankerCard3 {
+            height: 250px;
+            width: 175px;
+        }
+    </style>
+</head>
+
+<body onload="start()">
+    <header>
+        <h1>MiniBaccarat</h1>
+        <p>ルール</p>
+        <p>カードの数字の合計の1の位が9に近い方が勝ち。Player、Banker、Tie(引き分け)選んで賭けるシンプルなゲーム</p>
+    </header>
+
+    <!--チップ設定-->
+    <div class="Setting tip" id="settingTip">
+        <div>
+            <h1>ベット額を設定してください</h1>
+        </div>
+        <div class="select tip" id="selectTip">
+            <button class="off" id="10000" onclick="betSetting(this.id)">10000</button>
+            <button class="off" id="5000" onclick="betSetting(this.id)">5000</button>
+            <button class="off" id="1000" onclick="betSetting(this.id)">1000</button>
+            <button class="off" id="500" onclick="betSetting(this.id)">500</button>
+            <button class="off" id="100" onclick="betSetting(this.id)">100</button>
+            <button class="off" id="50" onclick="betSetting(this.id)">50</button>
+            <button class="off" id="25" onclick="betSetting(this.id)">25</button>
+            <button class="off" id="10" onclick="betSetting(this.id)">10</button>
+            <button class="off" id="5" onclick="betSetting(this.id)">5</button>
+            <button class="off" id="1" onclick="betSetting(this.id)">1</button>
+        </div>
+        <div class="tipInfo">
+            <div>
+                <p>所持</p>
+                <input type="text" id="hava" readonly>
+            </div>
+            <div>
+                <p>ベット額</p>
+                <input type="text" id="bet" readonly>
+            </div>
+
+        </div>
+
+        <div class="confilm Bet">
+            <div>
+                <button onclick="resetTipSetting()">リセット</button>
+            </div>
+            <div>
+                <button onclick="confilmTip()">確定</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!--掛ける場所の設定-->
+    <div class="off Setting betPosition" id="settingBetPosition">
+        <div>
+            <h1>どこに賭けますか？</h1>
+        </div>
+
+        <div class="select position">
+            <button id="Player" onclick="betPositionSetting(1)">Player</button>
+            <button id="Tie" onclick="betPositionSetting(2)">Tie</button>
+            <button id="Banker" onclick="betPositionSetting(3)">Banker</button>
+        </div>
+        <div>
+            <input type="text" id="txtBetPosition" readonly>
+        </div>
+        <div class="confilm tip">
+            <div>
+                <button onclick="confilmBetPosition()">確定</button>
+            </div>
+        </div>
+
+    </div>
+
+    <table border="1" class="off field" id="field">
+        <tbody>
+            <tr>
+                <td colspan="3">
+                    <div class="wrap playerInfo">
+                        <div>
+                            <h1>Player</h1>
+                        </div>
+                        <div>
+                            <input type="text" id="PlayerSum" readonly>
+                        </div>
+                    </div>
+                </td>
+                <td colspan="3">
+                    <div class="wrap bankerInfo">
+                        <div>
+                            <h1>Banker</h1>
+                        </div>
+                        <div>
+                            <input type="text" id="BankerSum" readonly>
+                        </div>
+                </td>
+            </tr>
+            <tr>
+                <td><img class="off img" id="playerCard1" src=""></td>
+                <td><img class="off img" id="playerCard2" src=""></td>
+                <td><img class="off img" id="playerCard3" src=""></td>
+
+                <td><img class="off img" id="bankerCard1" src=""></td>
+                <td><img class="off img" id="bankerCard2" src=""></td>
+                <td><img class="off img" id="bankerCard3" src=""></td>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <div class="wrap TieInfo">
+                        <div>
+                            <h1>Tie</h1>
+                        </div>
+                        <div class="display betTie">
+                            <input type="text" id="txtTieBet" readonly>
+                        </div>
+                        <div>
+                            <h1>Tie</h1>
+                        </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <div class="wrap BankerInfo">
+                        <div>
+                            <h1>Banker</h1>
+                        </div>
+                        <div class="display betBanker">
+                            <input type="text" id="txtBankerBet" readonly>
+                        </div>
+                        <div>
+                            <h1>Banker</h1>
+                        </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <div class="wrap PlayerInfo">
+                        <div>
+                            <h1>Player</h1>
+                        </div>
+                        <div class="display betPlayer">
+                            <input type="text" id="txtPlayerBet" readonly>
+                        </div>
+                        <div>
+                            <h1>Player</h1>
+                        </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <div class="wrap">
+                        <p>所持</p>
+                        <input type="text" id="fieldHave" readonly>
+                    </div>
+                </td>
+                <td colspan="3">
+                    <div class="wrap">
+                        <p>ベット</p>
+                        <input type="text" id="fieldBet" readonly>
+                    </div>
+                </td>
+        </tbody>
+    </table>
+
+    <div class="off Result" id="result">
+        <input type="text" id="txtResult" readonly>
+        <input type="text" id="txtComent" readonly>
+        <p>所持</p>
+        <input type="text" id="txtHavaAfter" readonly>
+
+        <div>
+            <button onclick="gameContinue()">続ける</button>
+            <a href="aTop.html">
+                <button>自己紹介ページへ</button>
+            </a>
+        </div>
+    </div>
+</body>
+
+</html>

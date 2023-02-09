@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        header {
+            display: flex;
+            position: fixed;
+            min-width: initial;
+            width: 100%;
+            top: 0;
+            background-color: #b6e7eb;
+            justify-content: center;
+            text-align: center;
+        }
+
+        footer {
+            bottom: 0;
+            min-width: initial;
+            width: 100%;
+            flex-direction: column;
+            background-color: #b6e7eb;
+            padding: 20px 13px;
+        }
+
+        .headerTitle {
+            display: flex;
+        }
+
+        .wrap {
+            display: flex;
+        }
+
+        .profile,
+        .profileInf {
+            flex-wrap: wrap;
+        }
+
+        .profile {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .profileInf {
+            display: flex;
+            margin: 150px 30px;
+            justify-content: space-evenly;
+        }
+
+        .profileImg {
+            display: flex;
+        }
+
+        .profileTxt {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .snslink {
+            list-style: none;
+            display: flex;
+            justify-content: space-evenly;
+        }
+
+        .logo {
+            height: 40px;
+            width: 40px;
+        }
+
+        .face {
+            height: 450px;
+            width: 450px;
+        }
+
+        img {
+            max-width: 100%;
+        }
+
+        .alfar1a {
+            list-style: none;
+        }
+
+        .off {
+            display: none;
+        }
+
+        .on {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        @media (max-width: 767px) {
+            header {
+                width: 100%;
+                display: flex;
+                top: 0;
+                right: 0;
+            }
+
+            footer {
+                width: 100%;
+                bottom: 0;
+            }
+
+            .face {
+                height: 300px;
+                width: 300px;
+            }
+
+            .alfar1a {
+                font-size: 75%;
+            }
+
+
+        }
+    </style>
+    <script>
+        function start() {
+            document.getElementById("alfar").className = "on plusa"
+        }
+        function closealfar(){
+            document.getElementById("alfar").className = "off plusa"
+        }
+
+        function start2(){
+            document.getElementById("hobby").className = "on hobby"
+        }
+    </script>
+
+</head>
+
+<body>
+    <header>
+        <div class="headerTitile">
+            <h1 onclick="start()">
+                F22BA111
+            </h1>
+            <a href="aMiniBaccarat.html">
+                <h2>ゲーム</h2>
+            </a>
+        </div>
+    </header>
+
+    <div class="profile">
+        <div class="wrap profileInf">
+            <div class="profileImg">
+                <img class="face" src="face.png">
+            </div>
+            <div class="profileTxt">
+                <h1>山本和哉</h1>
+                <h2>誕生日</h2>
+                <h3>4月21日</h3>
+                <h2 onclick="start2()">趣味</h2>
+                <h3>音楽、ドラマ、スポーツ観戦</h3>
+                <h2>最近好きな曲</h2>
+                <h3>Vaundy まぶた</h3>
+                <h3>ヨルシカ アルジャーノン</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="off plusa" id="alfar">
+        <h1>今季見ているドラマ</h1>
+        <ul class="alfar1"></ul>
+        <li class="alfar1a">
+            <h3>月・・・女神の教室・罠の戦争</h3>
+        </li>
+        <li class="alfar1a">
+            <h3>火・・・星降る夜に・夕暮れに、手をつなぐ</h3>
+        </li>
+        <li class="alfar1a">
+            <h3>水・・・リバーサルオーケストラ・スタンドUPスタート</h3>
+        </li>
+        <li class="alfar1a">
+            <h3>木・・・警視庁アウトサイダー・忍者に結婚は難しい</h3>
+        </li>
+        <li class="alfar1a">
+            <h3>金・・・100万回 言えばよかった</h3>
+        </li>
+        <li class="alfar1a">
+            <h3>土・・・大病院占拠</h3>
+        </li>
+        <li class="alfar1a">
+            <h3>日・・・Get Ready!</h3>
+        </li>
+        </ul>
+        <button onclick="closealfar()">閉じる</button>
+    </div>
+
+    <div class="off hobby" id="hobby">
+        <h1></h1>
+    </div>
+
+
+    <footer>
+        <ul class="snslink">
+            <li><a href="https://twitter.com"><img class="logo" src="Twitter logo.png" alt="Twitterlogo"></a>
+            </li>
+            <li><a href="https://www.instagram.com"><img class="logo" src="Instagram logo.png" alt="Instagramlogo"></a>
+            </li>
+            <li><a href="https://www.facebook.com"><img class="logo" src="facebook logo.png" alt="facebook logo"></a>
+            </li>
+        </ul>
+    </footer>
+
+</body>
+
+</html>
