@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>予約フォーム</title>
+</head>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    html,
+    body {
+        height: 100%;
+
+    }
+
+    /*@keyframes click-wave {
+        0% {
+            position: relative;
+            width: 30px;
+            height: 30px;
+            opacity: 0.35;
+        }
+
+        100% {
+            width: 200px;
+            height: 200px;
+            margin-top: -80px;
+            margin-left: -80px;
+            opacity: 0;
+        }
+    }*/
+
+    .cp_ipradio .option-input {
+        position: relative;
+        position: relative;
+        top: 5.5px;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 20px;
+        height: 20px;
+        margin-right: 0.5rem;
+        cursor: pointer;
+        transition: all 0.15s ease-out 0s;
+        color: #ffffff;
+        border: none;
+        outline: none;
+        background: #ffffff;
+        -webkit-appearance: none;
+        appearance: none;
+    }
+
+    .cp_ipradio .option-input:hover {
+        background: #ffffff;
+    }
+
+    .cp_ipradio .option-input:checked {
+        background: rgb(11, 60, 255);
+    }
+
+    .cp_ipradio .option-input:checked::before {
+        font-size: 20px;
+        line-height: 30px;
+        position: absolute;
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        content: '';
+        text-align: center;
+    }
+
+    .cp_ipradio .option-input:checked::after {
+        position: relative;
+        display: block;
+        content: '';
+        -webkit-animation: click-wave 0.65s;
+        animation: click-wave 0.65s;
+        background: #ffffff;
+    }
+
+    .cp_ipradio .option-input.radio {
+        border-radius: 50%;
+    }
+
+    .cp_ipradio .option-input.radio::after {
+        border-radius: 50%;
+    }
+
+    .cp_ipradio label {
+        line-height: 40px;
+        display: block;
+    }
+
+    .cp_ipradio .option-input:disabled {
+        cursor: not-allowed;
+        background: #9e9e9e;
+    }
+
+    .cp_ipradio .option-input:disabled::before {
+        font-size: 20px;
+        line-height: 30px;
+        position: absolute;
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        content: '✖︎';
+        text-align: center;
+    }
+
+    .cp_ipradio .disabled {
+        color: #9e9e9e;
+    }
+
+    .content_div {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        color: white;
+        background-color: #333333;
+    }
+
+    body {
+        color: white;
+        background-color: #333333;
+    }
+
+    .explain {
+        z-index: 1;
+        position: absolute;
+        background-color: #4f58b5;
+        display: none;
+        height: 329px;
+        width: 80%;
+        top: 17%;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 502px;
+        /* justify-content: flex-start; */
+    }
+
+    .error_all {
+        z-index: 1;
+        position: absolute;
+        background-color: #eb1742;
+        display: none;
+        height: 60%;
+        width: 80%;
+        top: 20%;
+        left: 10%;
+        border-radius: 10px;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .thankyou {
+        display: none;
+        width: 100%;
+        justify-content: center;
+        color: white;
+        background-color: #333333;
+    }
+
+    .div_L {
+        width: 20%;
+
+    }
+
+    .div_M {
+        width: 100%;
+        max-width: 500px;
+        text-align: center;
+    }
+
+    .div_R {
+        width: 20%;
+
+    }
+
+    .h1_text {
+        font-family: 'Iceland', cursive;
+        color: white;
+    }
+
+    .h3_text {
+        border-bottom: 1px solid #ffffff;
+    }
+
+
+    .input_name {
+        height: 34px;
+        width: 100%;
+        font-size: 20px;
+        background-color: rgb(255, 255, 255);
+        outline: none;
+    }
+
+    .error_sub_num {
+        color: red;
+        font-size: smaller;
+        margin-top: 0;
+        visibility: hidden;
+    }
+
+    .error_sub_name1 {
+        color: red;
+        font-size: smaller;
+        margin-top: 1px;
+        margin-bottom: 0;
+        visibility: hidden;
+    }
+
+    .error_sub_name2 {
+        color: red;
+        font-size: smaller;
+        margin-top: 1px;
+        margin-bottom: 0;
+        visibility: hidden;
+    }
+
+
+    @media screen {
+
+        .h3_text {
+            margin-bottom: 50px;
+        }
+
+        .div_name1 {
+            margin-bottom: 10px;
+        }
+
+        .div_name2 {
+            margin-bottom: 50px;
+        }
+
+        .cp_ipradio {
+            /*width: 90%;*/
+            /*margin: 2em auto;*/
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .explain {
+            left: 33.5%;
+        }
+
+
+    }
+
+    @media screen and (max-width: 600px) {
+
+        /* 横幅が400px以下の場合に適用するスタイル (スマホ画面用) */
+        .h3_text {
+            margin-bottom: 17%;
+        }
+
+        .div_name1 {
+            margin-bottom: 13%;
+        }
+
+        .div_name2 {
+            margin-bottom: 15%;
+            display: none;
+        }
+
+        .cp_ipradio {
+            /*width: 90%;*/
+            /*margin: 2em auto;*/
+            text-align: left;
+            margin-bottom: 17.5%;
+        }
+
+        .explain {
+            left: 10%;
+        }
+    }
+
+    /* .error_text {
+        text-align: center;
+        margin-top: 50%;
+    } */
+
+
+    .num_text {
+        text-align: left;
+        margin: 0;
+        text-wrap: nowrap;
+        margin-right: 10px;
+    }
+
+    .name_text {
+        text-align: left;
+        margin: 0;
+        text-wrap: nowrap;
+        margin-right: 10px;
+    }
+
+    .any_text {
+        margin: 0;
+        background-color: red;
+        border-radius: 1rem;
+        color: white;
+        text-align: center;
+        text-wrap: nowrap;
+        padding: 0 10px;
+    }
+
+    .any_text2 {
+        margin: 0;
+        background-color: red;
+        border-radius: 1rem;
+        color: white;
+        text-align: center;
+        text-wrap: nowrap;
+        padding: 0 10px;
+        display: none;
+    }
+
+
+    .name1_div {
+        display: flex;
+        margin-bottom: 5px;
+    }
+
+    .name_label {
+        /*margin-bottom: 5%;*/
+        color: #ffffff;
+    }
+
+    .form_btn {
+        /*box-shadow: 0 0 5px #d0cece; */
+        border: 1px solid #a8a8a8;
+        color: white;
+        line-height: 2.3;
+        /* font-weight: 600; */
+        background-color: #4d4d4d;
+        /* height: 33px; */
+        width: 50%;
+        /* width: 35%; */
+        /* height: 33px; */
+        border-radius: 20px;
+        /* margin-top: 5%;*/
+    }
+
+    .batsu {
+        display: flex;
+        position: relative;
+        width: 100%;
+        height: 30px;
+        justify-content: flex-end;
+    }
+
+    .batsu::before,
+    .batsu::after {
+        /* 共通設定 */
+        content: "";
+        position: absolute;
+        top: 90%;
+        right: 20px;
+        width: 5px;
+        /* 棒の幅（太さ） */
+        height: 30px;
+        /* 棒の高さ */
+        background: rgba(255, 255, 255, 0);
+    }
+
+    .batsu::before {
+        transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    .batsu::after {
+        transform: translate(-50%, -50%) rotate(-45deg);
+    }
+
+    .error_text_div {
+        width: 100%;
+        height: 70%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .explain_text_div {
+        padding-top: 30px;
+    }
+
+    @media screen and (min-width: 311px) {
+
+        /* 横幅が311px以上の場合に適用するスタイル */
+        .explain_text_div {
+            width: 80%;
+        }
+
+        .h4_explain {
+            font-size: 17px;
+        }
+
+        .h5_explain {
+            font-size: 13px;
+        }
+    }
+
+    @media screen and (max-width: 310px) {
+
+        /* 横幅が310px以下の場合に適用するスタイル */
+        .explain_text_div {
+            width: 95%;
+        }
+
+        .h4_explain {
+            font-size: 17px;
+        }
+
+        .h5_explain {
+            font-size: 13px;
+        }
+    }
+
+    @media screen and (max-width: 286px) {
+
+        /* 横幅が286px以下の場合に適用するスタイル */
+        .explain_text_div {
+            width: 95%;
+
+        }
+
+        .h4_explain {
+            font-size: 15px;
+        }
+
+        .h5_explain {
+            font-size: 12px;
+        }
+    }
+
+    .h3_explain {
+        margin: 0;
+        font-size: 30px;
+        text-align: center;
+    }
+
+    .h5_explain {
+        margin: 0;
+        margin-bottom: 5px;
+        color: #ccc;
+    }
+
+    .h4_explain {
+        margin-top: 0px;
+        margin-bottom: 5px;
+        white-space: nowrap;
+        font-weight: bold;
+        text-align: center;
+    }
+
+
+    .error_sub_div {
+        display: flex;
+    }
+
+    .explain_okButton {
+        border-radius: 100vh;
+        border-radius: 100vh;
+        width: 120px;
+        height: 40px;
+        border: 1px solid #a8a8a8;
+        color: white;
+        /* line-height: 2.3; */
+        font-weight: 600;
+        background-color: #4d4d4d;
+        margin-top: 12%;
+        margin-bottom: 25px;
+    }
+
+    .error_okButton {
+        border-radius: 100vh;
+        border-radius: 100vh;
+        width: 35%;
+        height: 8%;
+        border: 1px solid #a8a8a8;
+        color: white;
+        line-height: 2.3;
+        /* font-weight: 600; */
+        background-color: #4d4d4d;
+    }
+
+    .thankyou_okButton {
+        border-radius: 100vh;
+        border-radius: 100vh;
+        width: 35%;
+        height: 8%;
+        border: 1px solid #a8a8a8;
+        color: white;
+        line-height: 2.3;
+        /* font-weight: 600; */
+        background-color: #4d4d4d;
+    }
+
+    .thankyou_text {
+        color: #ffffff;
+    }
+</style>
+
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Iceland&display=swap" rel="stylesheet">
+
+<body>
+    <!--説明
+    <div id="explain_div" class="explain">
+        <span class="batsu"></span>
+        <div class="explain_text_div">
+            <h2 class="h3_explain">お願い</h2>
+            <h3 class="h4_explain">名前</h3>
+            <h5 class="h5_explain">・ひらかなのみ</h5>
+            <h5 class="h5_explain">・６文字以内</h5>
+            <h5 class="h5_explain">※ 不適切な名前はご遠慮ください</h5>
+        </div>
+        <button class="explain_okButton" onclick="off_error_div('explain_div')">OK</button>
+    </div>-->
+
+    <div>
+        <div id="explain_div" class="explain">
+            <span class="batsu"></span>
+            <h2 class="h3_explain">お願い</h2>
+            <div class="explain_text_div">
+
+                <p class="h4_explain">お名前の入力はひらかなのみ
+                    <br>
+                    ６文字以内でお願いします
+                    <br>
+                    <br>
+                    <span class="h5_explain">※ 不適切な名前はご遠慮ください</span>
+                </p>
+                <!-- <h5 class="h5_explain">※ 不適切な名前はご遠慮ください</h5> -->
+            </div>
+            <button class="explain_okButton" onclick="off_error_div('explain_div')">OK</button>
+        </div>
+    </div>
+
+    <!--エラーメッセージ-->
+    <div id="error_all" class="error_all" style="display: none;">
+        <span class="batsu"></span>
+        <div class="error_text_div">
+            <h3 class="error_text">入力内容に誤りがあります</h3>
+        </div>
+        <div style="text-align: center;">
+            <button class="error_okButton" onclick="off_error_div('error_all')">OK</button>
+        </div>
+    </div>
+
+    <!--thankyou ページ-->
+    <div id="thankyou_div" class="thankyou">
+
+        <div class="div_M">
+            <h1 class="h1_text">Cyber Hockey</h1>
+            <h3 class="thankyou_text">予約完了しました</h3>
+        </div>
+    </div>
+
+    <div id="main_div" class="content_div">
+        <!--<div class="div_L"></div>-->
+
+        <div class="div_M">
+            <center>
+                <h1 class="h1_text">Cyber Hockey</h1>
+
+                <h3 class="h3_text">予約フォーム</h3>
+
+                <form
+                    action="https://docs.google.com/forms/u/0/d/e/1FAIpQLSe14XKASGURCFqSf-GCuf7TfKkOCJ_Zg2dzBw0LIFUvYbeMEA/formResponse"
+                    method="POST" id="form" target="hidden-iframe">
+                    <div style="display: flex;">
+                        <p class="num_text">予約人数を選択</p>
+                        <p class="any_text">必須</p>
+                    </div>
+
+
+                    <div class="cp_ipradio">
+
+                        <label>
+                            <input type="radio" id="num" class="option-input radio" name="entry.274103448" value="１人"
+                                aria-label="1" aria-pointset="1" onclick="toggleRequired(false);" aria-label="１人"
+                                data-value="１人" checked>1人
+                        </label>
+
+                        <label>
+                            <input type="radio" id="num" class="option-input radio" name="entry.274103448" value="２人"
+                                aria-label="2" aria-pointset="2" onclick="toggleRequired(true);" aria-label="２人"
+                                data-value="２人">2人
+                        </label>
+
+
+                        <div class="error_sub_div">
+                            <p id="error_sub_num" class="error_sub_num">※ 必須項目です</p>
+                        </div>
+
+                    </div>
+
+
+                    <!--<div class="cp_ipradio">-->
+
+                    <div class="div_name1">
+                        <label class="name_label">
+                            <div class="name1_div">
+                                <p class="name_text">名前1を入力してください </p>
+                                <p id="name1_any" class="any_text">必須</p>
+                            </div>
+                            <input type="text" name="entry.1930264829" id="name1" class="input_name" required>
+
+                        </label>
+                        <div class="error_sub_div">
+                            <p id="error_sub_name1" class="error_sub_name1">※ ひらがなで6文字以下で入力してください</p>
+                        </div>
+                    </div>
+
+                    <div id="div_name2" class="div_name2">
+                        <label>
+                            <div class="name1_div">
+                                <p class="name_text">名前2を入力してください </p>
+                                <p id="name2_any" class="any_text2">必須</p>
+                            </div>
+                            <input type="text" name="entry.701034218" id="name2" class="input_name">
+                        </label>
+                        <div class="error_sub_div">
+                            <p id="error_sub_name2" class="error_sub_name2">※ ひらがなで6文字以下で入力してください</p>
+                        </div>
+                    </div>
+
+
+                    <label>
+                        <input type="submit" id="submit" class="form_btn" value="送信する">
+                    </label>
+
+                </form>
+            </center>
+        </div>
+
+        <!--<div class="div_R"></div>-->
+    </div>
+
+    <iframe name="hidden-iframe" style="display: none;"></iframe>
+
+    <script>
+        function on_error_div() {
+            document.getElementById('error_all').style.display = 'block';
+        }
+
+        function off_error_div(id) {
+            console.log("error");
+            document.getElementById(id).style.display = 'none';
+        }
+
+        /*function limitTextLength(inputElement, maxLength) {
+            inputElement.addEventListener('input', function() {
+                if (inputElement.value.length > maxLength) {
+                    inputElement.value = inputElement.value.slice(0, maxLength);
+                }
+            });
+        }*/
+
+        function limitTextLength(inputElement, maxLength) {
+            //console.log("kita");
+            if (inputElement.value.length > maxLength) {
+                inputElement.value = inputElement.value.slice(0, maxLength);
+            }
+        }
+
+        // 入力規則のエラー
+        const name1_div = document.getElementById('error_sub_name1');
+        const name2_div = document.getElementById('error_sub_name2');
+
+        // NGワードの配列作成
+        var NG_array = "あなる,あこぎ,あほ,あま,いんらん,いんわい,いんじゃ,いんぎんぶれい,いくじなし,いやみ,いんぽ,うぜえ,うんこ,うんち,うせろ,うざい,えろ 暴力,えごいずむ,えこひいき,おな,おなにー,おぶつ,おめこ,かんとんほうけい,かまちょ,かす,かれいしゅう,きじょうい,きしょい,きんたま,きえろ,きもい,くそ,くそみそてくにっく,くそくらえ,くそったれ,くんに,くたばれ,くず,けなし,けしずみ,けだもの,こしゃく,ころす,ころし,しね,しぬ,しな,しばく,しっこ,しんで,しりがる,すまた,すけべ,せくろす,せくはら,せふれ,ちんぽ,ちんちん,ちつ,ちんぷ,ちじょ,ちんかす,ちんげ,ちんこ,ちしょう,てこき,とんま,なかだし,はなくそ,はめ,ひゃくがい,ふけつ,へんたい,ほうけい,まんぽ,ましょう,ませ,ませがき,まざーこんぷれっくす,まぞ,みずしょうばい,みみくそ,むっつり,めくそ,めざわり,もらはら,やくちゅう,やにかす,やくたたず,ゆうがい,よすてびと,らんぼうもの,りょな,りんしょく,れいしすと,ろんぱり,ろうがい,ろりーたこんぷれっくす,わきが,わいざつ,がんこ,がき,がいじ,がんくび,ぐぐれかす,ぐず,げろ,げせわ,げどう,げす,げば,げばひょう,ごみ,ざこ,ざつ,じいしきかじょう,じこちゅうしんてき,じしんかじょう,じゃま,じじー,じゅくじょ,じこちゅう,じじい,ずんぐり,ぞんざい,だっちわいふ,どれい,ばか,ばかやろう,ばーか,ばばあ,ばけもの,ばばぁ,びっち,びじれいく,びっこ,びょうき,ぶさいく,ぶす,ぶらく,べんとうもち,ぼけ,ぼんくら,ぱいぱい,ぷりけつ,ぷっしー,ぺーぺー,ぺにす".split(",");
+
+        // NGwordのTrue or False
+        var NG_flg = false;
+
+        // NGwordチェック関数
+        // @param 予約人数、名前1，名前2
+        function NGword_check(Anums, Aname1, Aname2) {
+            if (Anums == 1) {
+                // NGwordじゃないかチェック
+                for (var i = 0; i < NG_array.length; i++) {
+                    if (Aname1 == NG_array[i]) {
+                        // 含まれていたらエラーを表示
+                        on_error_div();
+                        name1_div.style.visibility = "visible";
+                        e.preventDefault();
+                        return false;
+                    }
+                }
+
+            }else if (Anums == 2) {
+                for (var i = 0; i < NG_array.length; i++) {
+                    if (Aname1 == NG_array[i]) {
+                        on_error_div();
+                        name1_div.style.visibility = "visible";
+                        e.preventDefault();
+                        return false;
+                    }
+                }
+                for (var i = 0; i < NG_array.length; i++) {
+                    if (Aname2 == NG_array[i]) {
+                        on_error_div();
+                        name2_div.style.visibility = "visible";
+                        e.preventDefault();
+                        return false;
+                    }
+                }
+            }
+
+        }
+        // 使用例
+        var textarea = document.getElementById('name1'); // 制限したいテキストエリアの要素を取得
+        var maxLength = 5; // 最大文字数を設定
+        //limitTextLength(textarea, maxLength); // 関数を呼び出して制限を適用
+
+        textarea.addEventListener('input', limitTextLength(textarea, maxLength));
+
+        // 予約人数
+        var nums = 1;
+
+        // ここの読解
+        function toggleRequired(flg) {
+            const name2 = document.getElementById('name2');
+            name2.required = flg;
+
+            const name2_any = document.getElementById('name2_any');
+            const div_name2 = document.getElementById('div_name2');
+
+            // 必須の表示、非表示
+            if (flg) {
+                // 表示処理
+                name2_any.style.display = 'block';
+                div_name2.style.display = 'block';
+                nums = 2;
+            } else {
+                // 非表示処理
+                name2_any.style.display = 'none';
+                div_name2.style.display = 'none';
+                nums = 1;
+            }
+        }
+
+        toggleRequired(false)
+
+        document.getElementById("form").addEventListener("submit", function (e) {
+
+            const num_div = document.getElementById('error_sub_num');
+
+            //e.preventDefault(); // フォームの通常の送信を防ぐ
+            var form = document.getElementById("form");
+            var num = document.getElementById('num').value;
+            // 予約人数選択してない場合
+            if (num == "blank") {
+                console.log("予約人数");
+                num_div.style.visibility = "visible";
+                on_error_div();
+                return false;
+            }
+
+            var name1 = document.getElementById("name1").value;
+            var name2 = document.getElementById("name2").value;
+
+            // divのリセット
+            name1_div.style.visibility = "hidden";
+            name1_div.style.visibility = "hidden";
+
+            if (nums == 1) {
+
+                // 文字数がオーバーしている場合
+                if (name1.length > 6) {
+                    console.log("文字1");
+                    name1_div.style.visibility = "visible";
+                    on_error_div();
+                    // フォームの通常の送信を防ぐ
+                    e.preventDefault();
+                    return false;
+                }
+
+                // ひらがな以外の場合
+                const regex1 = /^[\u3040-\u309F]+$/;
+                if (!(regex1.test(name1))) {
+                    console.log("ひらがな1");
+                    name1_div.style.visibility = "visible";
+                    on_error_div();
+                    e.preventDefault();
+                    return false;
+                }
+
+
+            } else if (nums == 2) {
+                // フラグ変数
+                var name1_flg = false;
+                var name2_flg = false;
+
+                // 文字数がオーバーしている場合
+                if ((name1.length) > 6 && (name2.length > 6)) {
+                    console.log("文字1");
+                    console.log("文字2");
+                    name1_flg = true;
+                    name2_flg = true;
+
+                } else if (name1.length > 6) {
+                    console.log("文字1");
+                    name1_flg = true;
+                } else if (name2.length > 6) {
+                    console.log("文字2");
+                    name2_flg = true;
+                }
+
+                // ひらがな以外の場合
+                const regex1 = /^[\u3040-\u309F]+$/;
+                if (!(regex1.test(name1)) && !(regex1.test(name2))) {
+                    console.log("ひらがな1");
+                    console.log("ひらがな2");
+                    name1_flg = true;
+                    name2_flg = true;
+
+                } else if (!(regex1.test(name1))) {
+                    console.log("ひらがな1");
+                    name1_flg = true;
+
+                } else if (!(regex1.test(name2))) {
+                    console.log("ひらがな2");
+                    name2_flg = true;
+                }
+
+                // 両方とも間違えている場合
+                if (name1_flg & name2_flg) {
+                    name1_div.style.visibility = "visible";
+                    name2_div.style.visibility = "visible";
+                    on_error_div();
+                    e.preventDefault();
+                    return false;
+
+                } else if (name1_flg) {
+                    name1_div.style.visibility = "visible";
+                    on_error_div();
+                    e.preventDefault();
+                    return false;
+
+                } else if (name2_flg) {
+                    name2_div.style.visibility = "visible";
+                    on_error_div();
+                    e.preventDefault();
+                    return false;
+
+                } else {
+                    console.log("else");
+                }
+
+                // 変数のリセット
+                name1_flg = false;
+                name2_flg = false;
+            }
+
+            // NGwordのチェック
+            NGword_check(nums, name1, name2);
+
+            // 成功したらthankyouページ表示、予約フォーム削除
+            document.getElementById("thankyou_div").style.display = "flex";
+            document.getElementById("main_div").style.display = "none";
+            return true;
+
+            // 成功したら押させなくする
+            //document.getElementById('submit').disabled = "disabled";
+        });
+
+
+        /* カスタムURLを構築
+        var customURL = "https://script.google.com/macros/s/AKfycbwFLvFL1IUynPi4xVWanZV4fQN-AqgPhbnPzNmbYIvG2qK0QueLjWgdzTflM1zS6Ozi/exec?" +
+            "form=" + num + "," + encodeURIComponent(name1) + "," + encodeURIComponent(name2);
+ 
+        //リダイレクト
+        window.location.href = customURL;
+ 
+        callApi(customURL);
+ 
+ 
+ 
+    });
+ 
+    // api 情報送信
+    async function callApi(url) {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+ 
+            /*json受け取り
+            const data = await response.json();
+            console.log(data);
+ 
+        } catch (error) {
+            console.error(error);
+            return null; // エラー時のデフォルト値を設定するか、エラーを再スローするか、適切なエラーハンドリングを行うことができます
+        }
+    }
+    */
+
+    </script>
+
+
+</body>
+
+</html>
